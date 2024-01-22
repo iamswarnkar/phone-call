@@ -1,6 +1,6 @@
 {
   "build": {
-    "preview": {
+    "production": {
       "distribution": "internal",
       "android": {
         "buildType": "apk",
@@ -8,7 +8,7 @@
       },
       "channel": "preview"
     },
-    "production": {
+    "preview": {
       "distribution": "internal",
       "android": {
         "buildType": "apk",

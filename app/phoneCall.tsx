@@ -5,6 +5,7 @@ import {
   StyleSheet,
   FlatList,
   Image,
+  ActivityIndicator,
 } from "react-native";
 
 import React, { useCallback, useEffect, useState } from "react";
@@ -73,8 +74,14 @@ export default function PhoneCall() {
   useEffect(() => {
     fetch("http://16.170.162.36:8001/new/data")
       .then((res) => res.json())
-      .then((data) => setPhoneNumbers(data?.numbersData));
-  }, [phoneNumbers]);
+      .then((data) => {
+        if (data) {
+          setPhoneNumbers(data?.numbersData);
+        } else {
+          Alert.alert("Network error", "something want wrong");
+        }
+      });
+  }, []);
   return (
     <View style={{ paddingHorizontal: 20 }}>
       <TextInput
@@ -87,13 +94,21 @@ export default function PhoneCall() {
       <TouchableOpacity style={styles.button} onPress={handleCallPress}>
         <Text style={styles.text}> make a Call</Text>
       </TouchableOpacity>
-      <FlatList
-        style={{ marginTop: 20, width: "100%" }}
-        data={phoneNumbers}
-        keyExtractor={keyExtractor}
-        renderItem={renderItem}
-        ItemSeparatorComponent={() => <View style={{ height: 4 }} />}
-      />
+      {phoneNumbers ? (
+        <FlatList
+          style={{ marginTop: 20, width: "100%" }}
+          data={phoneNumbers}
+          keyExtractor={keyExtractor}
+          renderItem={renderItem}
+          ItemSeparatorComponent={() => <View style={{ height: 4 }} />}
+        />
+      ) : (
+        <ActivityIndicator
+          style={{ marginTop: 48 }}
+          size="large"
+          color="#00ff00"
+        />
+      )}
     </View>
   );
 }
