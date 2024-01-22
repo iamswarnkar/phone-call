@@ -1,56 +1,78 @@
-import React, { useState } from "react";
-import { Alert, Pressable, StyleSheet, TextInput } from "react-native";
+import React from "react";
+import { ToastAndroid, TouchableOpacity } from "react-native";
 import { Text, View } from "./Themed";
-import RNImmediatePhoneCall from "react-native-immediate-phone-call";
+import { homeScreen } from "../constants/HomeData";
+import { useRouter } from "expo-router";
 
 export default function EditScreenInfo() {
-  const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const router = useRouter();
 
-  const handleCallPress = async () => {
-    if (phoneNumber.length < 10) {
-      Alert.alert("Massage", "Enter valid phone number");
-    } else {
-      RNImmediatePhoneCall.immediatePhoneCall(phoneNumber);
-    }
+  const navigateToStartCalling = () => {
+    router.push("/phoneCall");
   };
+
+  const showToast = (massage: string) => {
+    ToastAndroid.show(`${massage} is under development`, ToastAndroid.SHORT);
+  };
+
   return (
     <View>
-      <TextInput
-        keyboardType="number-pad"
-        maxLength={10}
-        onChangeText={(e) => setPhoneNumber(e)}
-        style={styles.textInput}
-      />
-      <Pressable style={styles.button} onPress={handleCallPress}>
-        <Text style={styles.text}> make a Call</Text>
-      </Pressable>
+      <View style={{ justifyContent: "center", alignItems: "center" }}>
+        <Text numberOfLines={2} style={{ textAlign: "center", fontSize: 28 }}>
+          Welcome
+        </Text>
+        <Text style={{ textAlign: "center", marginBottom: 8, fontSize: 28 }}>
+          Analogue it solutions
+        </Text>
+        <TouchableOpacity
+          onPress={navigateToStartCalling}
+          style={{
+            backgroundColor: "blue",
+            width: "80%",
+            borderRadius: 20,
+            marginTop: 8,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: "bold",
+              textAlign: "center",
+              paddingVertical: 8,
+            }}
+          >
+            Start Calling
+          </Text>
+        </TouchableOpacity>
+      </View>
+      <View
+        style={{
+          marginTop: 20,
+          flexDirection: "row",
+          flexWrap: "wrap",
+          justifyContent: "center",
+        }}
+      >
+        {homeScreen.map((item) => (
+          <View key={item.id} style={{ padding: 8 }}>
+            <TouchableOpacity
+              onPress={() => showToast(item.title)}
+              style={{
+                height: 150,
+                width: 150,
+                backgroundColor: item.backGround,
+                borderRadius: 8,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+                {item.title}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ))}
+      </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  textInput: {
-    width: 320,
-    borderColor: "#fff",
-    backgroundColor: "#fff",
-    height: 40,
-    paddingHorizontal: 8,
-    borderRadius: 12,
-  },
-  text: {
-    color: "#fff",
-    width: 320,
-    textAlign: "center",
-    fontWeight: "700",
-    marginTop: 6,
-  },
-  button: {
-    width: "100%",
-    backgroundColor: "#228B22",
-    marginTop: 12,
-    height: 30,
-    borderRadius: 8,
-  },
-});
-
-// eas init --id 0a02270c-7c36-4889-bba0-b7346c64ab88

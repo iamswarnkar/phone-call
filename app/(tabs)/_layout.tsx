@@ -26,7 +26,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Make a phone Call",
+          title: "Home",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
