@@ -33,7 +33,7 @@ export default function PhoneCall() {
   };
 
   const makeCall = async (data: string) => {
-    RNImmediatePhoneCall.immediatePhoneCall(data);
+    RNImmediatePhoneCall.immediatePhoneCall(data.toString());
   };
 
   const renderItem = useCallback(
@@ -42,7 +42,7 @@ export default function PhoneCall() {
         makeCall(item?.phone_number);
       };
       return (
-        <View style={{}}>
+        <View>
           <TouchableOpacity
             onPress={onPress}
             style={{
@@ -80,7 +80,8 @@ export default function PhoneCall() {
         } else {
           Alert.alert("Network error", "something want wrong");
         }
-      });
+      })
+      .catch((e) => console.log(e, "eeeeeeeeeeeeeeee"));
   }, []);
   return (
     <View style={{ paddingHorizontal: 20 }}>
